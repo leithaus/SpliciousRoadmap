@@ -11,6 +11,7 @@
 <center><p class="p1">The segue to the global perspective is important in the context of how most investors are thinking about BTC. Adam Draper and his father Tim Draper (of Draper Fisher Jurvetson), are two high profile investors who believe, with many, that the real BTC opportunities are in the South American and African markets, where they are poised to skip several first world financial services steps, just like they skipped the landline telecommunications steps and went straight to mobile. When you factor in those markets, the conservative growth potential undergoes a 10X expansion.</p></center>
 <center><a href="http://biosimilarity.com/qoid-an-origin-story.html"><span class="s1">To find out more check out the QOID origin story</span></a></center>
 <center><a href="http://biosimilarity.com/technical-documentation.html"><span class="s1">To learn more about the technology check out this introduction to the architecture.</span></a></center>
+<center><a href="http://localhost:8180/roadmap"><span class="s1">Top</span></a></center>
 <br>
 [/#assign]
 [#include "/layout.ftl"/]
