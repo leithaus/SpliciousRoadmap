@@ -12,7 +12,7 @@
 
   <properties>
     <cx.version>2.5</cx.version>
-    <cx.port>8180</cx.port>
+    <cx.port>9119</cx.port>
     <cx.router>com.biosimilarity.spirograph.Main</cx.router>
   </properties>
 
