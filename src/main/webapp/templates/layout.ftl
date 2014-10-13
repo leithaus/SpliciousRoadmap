@@ -8,6 +8,10 @@
           type="text/css"
           media="screen"
           href="/css/main.css"/>
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="/css/bootstrap.min.css"/>
     <title>Simple Circumflex Application</title>
   </head>
   <body>

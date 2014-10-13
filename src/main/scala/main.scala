@@ -10,6 +10,8 @@ class Main extends Router {
 
   get("/roadmap") = redirect( "clickableGR.html" )
   get("/test") = "I'm fine, thanks!"
+  get("/financials/1") = ftl("financials1.ftl")
+  get("/financials/2") = ftl("financials2.ftl")
   get("/") = ftl("index.ftl")
 
 }
