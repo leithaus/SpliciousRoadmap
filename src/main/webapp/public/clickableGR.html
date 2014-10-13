@@ -53,6 +53,71 @@
     <script type="text/javascript" src="EaselJS/src/easeljs/utils/SpriteSheetBuilder.js"></script>
 
     <script type="text/javascript">    
+       function getGUID() {
+           return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+               var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+               return v.toString(16);
+           });
+       }
+       function findAvailArea( scaleFactor ) {
+           var availWidth = $(window).width() - 20;
+           var availHeight = $(window).height() - 20;
+           
+           // instantiate golden ratio constant
+           var PHI = (1+ Math.sqrt(5))/2;
+           
+           // resize canvas based on golden ratio
+           if(availWidth/availHeight > PHI){
+               availWidth = availHeight * PHI;
+           } else if(availWidth/availHeight < PHI){
+               availHeight = availWidth/PHI;
+           }
+
+           var xOffset = ( availWidth/( PHI * 2 ) ) * ( 1.0 - scaleFactor ) ;
+           var yOffset = ( availHeight/( PHI * 2 ) ) * ( 1.0 - scaleFactor ) ;
+
+           var rslt = {
+               "availWidth" : availWidth,
+               "availHeight" : availHeight,
+               "xOffset" : xOffset,
+               "yOffset" : yOffset,
+               "PHI" : PHI
+           };
+           return rslt;
+       }
+       function phiCanvas( params, selector, sfx, sfy, doPrepend ) {
+           var availWidth = ( params.availWidth * sfx );
+           var availHeight = ( params.availHeight * sfy );
+           var xOffset = params.xOffset;
+           var yOffset = params.yOffset;
+           
+           var PHI = params.PHI;
+           
+           var id = getGUID();
+           var cnvsSelector = "#" + id;
+           // add canvas HTML tag to body
+           var canvasTag = '<canvas class="phiCanvas" id="' + id  + '" width="'+availWidth+'" height="'+availHeight+'"></canvas>';
+
+           if ( doPrepend ) {
+               $( selector ).prepend(canvasTag);
+           }
+           else {
+               $( selector ).html(canvasTag);
+           }
+           var canvas = $( cnvsSelector ).get(0);
+
+           // get it's context
+           canvasCtxt = canvas.getContext('2d');
+           
+           canvasCtxt.strokeStyle = 'red';
+           canvasCtxt.lineWidth = 2;
+           
+           // Fill the path
+           canvasCtxt.fillStyle = "#00000";
+           canvasCtxt.fillRect(0,0,availWidth,availHeight);
+
+           return canvas;
+       }
        function drawSpiral( stage, g, availWidth, availHeight, xOffset, yOffset, PHI ){ //stage ){
            // draw first inner golden rectangle
            var x1 = availWidth/PHI;           
@@ -182,7 +247,7 @@
                    "x" : ( 0 + xOffset ), "y" : ( availHeight + yOffset ),
                    "name" : "Splicious Music",
                    "text" : null, "clicked" : false,
-                   "topicId" : "foo", "topic" : null,
+                   "topicId" : "spliciousMusic", "topic" : null,
                    "graphics" : null
                },
                {
@@ -266,11 +331,16 @@
 
        function showText( stage, i, pt, handler ) {
            //console.log( "showText: stage = " + stage.toString() + " i = " + i.toString() );
-           var text = new createjs.Text( pt.name, "32px Optima", "#ff7700" );
+           var text = new createjs.Text( pt.name, "38px Optima", "#ff7700" );
            text.textBaseline = "middle";
            text.textAlign = "left";
-           text.color = "#7200ff";
-           text.outline = 2;                 
+           //text.color = "#7200ff";
+           //text.color = "#2ce490";
+           //text.color = "#7500bf";
+           //text.color = "#9c00ff";
+           //text.color = "#001fff";
+           text.color = "#bf6900";
+           text.outline = 3;                 
            if ( i == 5 ) {
                text.x = pt.x - 30;
                text.y = pt.y - 90 ;
@@ -292,52 +362,92 @@
            stage.update();
        }       
 
-       function showTopic( stage, i, pt, handler ) {
-           console.log( "in show topic ( 1 ) with pt.topicId = " + pt.topicId.toString() );
-           container = new createjs.Container();
-	   stage.addChild(container);
+       function showTopic( oStage, cntnr, i, pt, handler ) {
+           console.log( "in show topic ( 1 ) with pt.topicId = " + pt.topicId );
 
-           console.log( "in show topic ( 2 ) with pt.topicId = " + pt.topicId.toString() );
-	   var frame = new createjs.Shape( pt.graphics );
-	   frame.graphics.beginFill("#FF0").drawRect(0,0,340,280);
-	   frame.regX = 170;
-	   frame.regY = 140;
-           console.log( "in show topic ( 3 ) with pt.topicId = " + pt.topicId.toString() );
+           var sf = 0.30;
+           var params = findAvailArea( sf );
+//            var canvas = phiCanvas( params, ".canvasHolder", sf, 1.0, true );
+           //canvas.style.position = "absolute";
+
+           var availWidth = params.availWidth;
+           var availHeight = params.availHeight;
+           var xOffset = params.xOffset;
+           var yOffset = params.yOffset;
            
-           //var contentElem = $( "#" + pt.topicId );
-	   var content = new createjs.DOMElement( pt.topicId );
-	   content.regX = 165;
-	   content.regY = 135;
-           console.log( "in show topic ( 4 ) with pt.topicId = " + pt.topicId.toString() );
+           var PHI = params.PHI;
+           
+//            var stage = new createjs.Stage(canvas);
+//            var s = new createjs.Shape();
+// 	   var g = s.graphics;
+           
+//            g.setStrokeStyle(1, 'round', 'round');
+// 	   g.beginStroke("#0F0");
+// 	   g.beginFill("#000");
+//            g.drawRect(0,0,availWidth,( availHeight / 2 ));
+//            g.endFill();
 
-           container.addChild(frame, content);
-	   container.x = 300; container.y = 200;
+//            var container = new createjs.Container();
+// 	   stage.addChild(container);
+
+           console.log( "in show topic ( 2 ) with pt.topicId = " + pt.topicId );
+	   //var frame = new createjs.Shape( pt.graphics );
+           //var frame = new createjs.Shape( g );
+	   //frame.graphics.beginFill("#000").drawRect(0,0,availWidth,availHeight);
+	   //frame.regX = 310;
+	   //frame.regY = 400;
+           console.log( "in show topic ( 3 ) with pt.topicId = " + pt.topicId );
+
+//            img = new Image();
+//            img.src = "fern1.jpeg";
+
+//            var image = new createjs.Bitmap(img);
+//            image.mask = s;
+
+           var tpcId = "#" + pt.topicId;
+           var tpcDiv = $( tpcId ).get( 0 );
+           //tpcDiv.parentNode.removeChild( tpcDiv );
+           tpcDiv.style.visibility = 'visible';
+           var content = new createjs.DOMElement( tpcDiv );           
+           //content.position = "absolute";
+           content.x = 3;
+           content.y = 3;
+           //content.regX = availWidth;
+	   //content.regY = availHeight - 150;
+           
+           //container.addChild(frame, image);
+           //container.addChild(s, image, content);
+           //container.addChild(content);
+           //cntnr.addChild(s, image, content);
+           cntnr.addChild(content);
+	   //container.x = 3; container.y = 3;
 	   //container.alpha = 0.8;
 	   //container.rotation = 25;
-	   container.scaleX = 1.0;
-           container.scaleY = 1.0;
+	   //container.scaleX = 1.0;
+           //container.scaleY = 1.0;
            
-           console.log( "in show topic ( 5 ) with pt.topicId = " + pt.topicId.toString() );
+           console.log( "in show topic ( 5 ) with pt.topicId = " + pt.topicId );
            
-           pt.topic = container;
+           //pt.topic = container;
+           pt.topic = content;           
 
-           function tick(event) {
-               if ( container.scaleX <= 2.0 ) {
-	           container.scaleX = container.scaleX + 0.1;
-                   container.scaleY = container.scaleY + 0.1;
-	           //container.alpha = 0.5*(1+Math.sin(container.rotation*0.01));
-	           stage.update(event);
-               }
-               else {
-                   createjs.Ticker.removeAllEventListeners();
-               }
-	   }
+//            function tick(event) {
+//                if ( container.scaleX <= 2.0 ) {
+// 	           container.scaleX = container.scaleX + 0.1;
+//                    container.scaleY = container.scaleY + 0.1;
+ 	           //container.alpha = 0.5*(1+Math.sin(container.rotation*0.01));
+// 	           stage.update(event);
+//                }
+//                else {
+//                    createjs.Ticker.removeAllEventListeners();
+//                }
+// 	   }
 
-           createjs.Ticker.addEventListener("tick", tick);
+//            createjs.Ticker.addEventListener("tick", tick);
 
-           console.log( "in show topic ( 6 ) with pt.topicId = " + pt.topicId.toString() );
+           console.log( "in show topic ( 6 ) with pt.topicId = " + pt.topicId );
 
-           stage.update();
+           oStage.update();
        }
 
        function hideText( stage, pt ) {
@@ -348,15 +458,21 @@
            stage.update();
        }
  
-       function hideTopic( stage, pt ) {
+       function hideTopic( stage, container, pt ) {
            var ptTpc = pt.topic;
-           console.log( "in hideTopic with pt = " + pt.toString() + " pt.text = " + ptTpc.toString() );
+           console.log( "in hideTopic with pt = " + pt.toString() + " pt.topic = " + ptTpc.toString() );
            pt.topic = null;
-           stage.removeChild( ptTpc );           
+           var tpcId = "#" + pt.topicId;
+           $( tpcId ).get( 0 ).style.visibility = 'hidden';
+           //stage.removeChild( ptTpc );           
+           //var ptTpcPrnt = ptTpc.parentNode;
+           //console.log( "in hideTopic with pt = " + pt.toString() + " pt.topic.parent = " + ptTpcPrnt.toString() );
+           //ptTpcPrnt.removeChild( ptTpc );
+           container.removeChild( ptTpc );
            stage.update();
        }
 
-       function handleTextClick( stage, event, pts ) {
+       function handleTextClick( stage, container, event, pts ) {
            console.log( "in handleTextClick with event = " + event.toString() );
            var ptNIndex = findPt( event, pts );           
            if ( ptNIndex != null ) {
@@ -367,13 +483,13 @@
                    console.log( "pt.clicked is false " );
                    pt.clicked = true;
                    showText( stage, i, pt, handleTextClick );
-                   showTopic( stage, i, pt, handleTextClick );
+                   showTopic( stage, container, i, pt, handleTextClick );
                }
                else {
                    console.log( "pt.clicked is true " );
                    pt.clicked = false;
                    hideText( stage, pt );
-                   hideTopic( stage, pt );
+                   hideTopic( stage, container, pt );
                }
            }
            else {
@@ -381,7 +497,7 @@
            }
        }       
 
-       function handleTextRollover( stage, event, pts ) {
+       function handleTextRollover( stage, container, event, pts ) {
            var ptNIndex = findPt( event, pts );           
            if ( ptNIndex != null ) {
                //console.log( "text rollover ptNIndex is not null " );
@@ -401,7 +517,7 @@
            }
        }
 
-       function handleTextRollout( stage, event, pts ) {
+       function handleTextRollout( stage, container, event, pts ) {
            var ptNIndex = findPt( event, pts );           
            if ( ptNIndex != null ) {
                //console.log( "text rollout ptNIndex is not null " );
@@ -454,37 +570,21 @@
            stage.addChild( sCirc );
        }       
 
-       function loadCanvas(){ //stage ){
-           var availWidth = $(window).width() - 20;
-           var availHeight = $(window).height() - 20;
+       function loadCanvas( mainCanvasAdded ){ //stage ){
+           var sf = 0.85;
+           var params = findAvailArea( sf );
+           var availWidth = params.availWidth;
+           var availHeight = params.availHeight;
+           var xOffset = params.xOffset;
+           var yOffset = params.yOffset;
            
-           // instantiate golden ratio constant
-           var PHI = (1+ Math.sqrt(5))/2;
-           
-           // resize canvas based on golden ratio
-           if(availWidth/availHeight > PHI){
-               availWidth = availHeight * PHI;
-           } else if(availWidth/availHeight < PHI){
-               availHeight = availWidth/PHI;
-           }
+           var PHI = params.PHI;
            
            // add canvas HTML tag to body
-           //var canvas = document.getElementById("testCanvas");
-           var canvasTag = '<canvas id="testCanvas" width="'+availWidth+'" height="'+availHeight+'"></canvas>';
-           //$('body').html(canvasTag);
-           $(".canvasHolder").html(canvasTag);
-           var canvas = $('canvas').get(0);
-           
-           // get it's context
-           canvasCtxt = canvas.getContext('2d');
-           
-           canvasCtxt.strokeStyle = 'red';
-           canvasCtxt.lineWidth = 2;
-           
-           // Fill the path
-           canvasCtxt.fillStyle = "#00000";
-           canvasCtxt.fillRect(0,0,availWidth,availHeight);
-           //canvasCtxt.style.opacity = '0.2';
+           if ( !mainCanvasAdded ) {
+               var canvas = phiCanvas( params, ".canvasHolder", 1.0, 1.0, true );
+               canvas.style.position = "absolute";
+           }
            
            var stage = new createjs.Stage(canvas);
            var s = new createjs.Shape();
@@ -495,23 +595,23 @@
 	   g.beginFill("#000");
            g.drawRect(0,0,availWidth,availHeight);
            g.endFill();
-           
-           var xOffset = ( availWidth/( PHI * 2 ) ) * .15 ;
-           var yOffset = ( availHeight/( PHI * 2 ) ) * .15 ;
 
            var pts =
-               drawSpiral( stage, g, ( availWidth * 0.85 ), ( availHeight * 0.85 ), xOffset, yOffset, PHI );           
+               drawSpiral( stage, g, ( availWidth * sf ), ( availHeight * sf ), xOffset, yOffset, PHI );           
            
            pts.forEach( function(pt) { pt.graphics = g; clickTarget( stage, s, pt, pts ) } );
 
+           var container = new createjs.Container();
+           container.addChild( s );
+
            stage.enableMouseOver( 100 );
 
-           stage.addChild( s );
+           //stage.addChild( s );           
 
            var ptsL = pts.length;
            for (var i = 0; i < ptsL; i++) {
                var pt = pts[i];
-               var text = new createjs.Text( ( i + 1 ).toString(), "60px Optima", "#ff7700" );
+               var text = new createjs.Text( ( i + 1 ).toString(), "60px Optima", "#2CE490" );
                text.x = pt.x;
                text.y = pt.y;
                text.textBaseline = "middle";
@@ -521,32 +621,35 @@
                    "click",
                    function(event) {
                        console.log( "click" + event.toString() );
-                       handleTextClick( stage, event, pts );
+                       handleTextClick( stage, container, event, pts );
                    }
                );
                text.addEventListener(
                    "rollover",
                    function(event) {
                        console.log( "rollover" + event.toString() );
-                       handleTextRollover( stage, event, pts );
+                       handleTextRollover( stage, container, event, pts );
                    }
                );
                text.addEventListener(
                    "rollout",
                    function(event) {
                        console.log( "rollout" + event.toString() );
-                       handleTextRollout( stage, event, pts );
+                       handleTextRollout( stage, container, event, pts );
                    }
                );
-               stage.addChild( text );
+               container.addChild( text );
            }
            
+           stage.addChild( container );
            stage.update();
        }
 
+       function initialLoadCanvas() { loadCanvas( false ); }
+
         // redraws golden rectangles if window is resized
         $( document ).ready(function() {
-          $(window).resize(function() { loadCanvas(); });                  
+            $(window).resize(function() { loadCanvas( true ); });                  
         });
     </script>
     <style type="text/css">
@@ -555,17 +658,76 @@
 </head>
 
 
-<body onload="loadCanvas()">
-    <div class="canvasHolder">
-      <div id="foo" style="z-index: 1; position: absolute; background-color: #00F; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
-        <img src="fern1.jpeg" alt="Fern" height="42" width="42">
-        <b>Splicious Music Sharing</b><br/><br/>
-        Splicious music sharing is a narrowly focused application of the technology to seed the network and garner attention.<br/><br/>
-	<br/><br/>
-	<!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
-        <a href="http://www.splicious.net/">Click here to learn more.</a>
+<body onload="initialLoadCanvas()">
+    <div id="appContainer">      
+      <!--div id="detailCanvasHolder"-->
+      <div class="canvasHolder">
+        <div id="spliciousMusic" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
+          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <b>Splicious Music Sharing</b><br/><br/>
+          Splicious music sharing is a narrowly focused application of the technology to seed the network and garner attention.<br/><br/>
+	  <br/><br/>
+	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
+          <a href="http://www.splicious.net/">Click here to learn more.</a>
+        </div>
+        <div id="spliciousSharing" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
+          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <b>Splicious Content Sharing</b><br/><br/>
+          Splicious content sharing widens the scope of application of the technology to general content sharing.<br/><br/>
+	  <br/><br/>
+	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
+          <a href="http://www.splicious.net/">Click here to learn more.</a>
+        </div>
+        <div id="spliciousMarket" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
+          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <b>Splicious Market</b><br/><br/>
+          Splicious market sharing widens the scope of application of the technology to a more general BTC-based online market.<br/><br/>
+	  <br/><br/>
+	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
+          <a href="http://www.splicious.net/">Click here to learn more.</a>
+        </div>
+        <div id="spliciousDating" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
+          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <b>Splicious Dating</b><br/><br/>
+          Splicious dating widens the scope of application of the technology to a dating.<br/><br/>
+	  <br/><br/>
+	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
+          <a href="http://www.splicious.net/">Click here to learn more.</a>
+        </div>
+        <div id="privacyAndIdentity" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
+          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <b>Privacy and Identity</b><br/><br/>
+          Privacy and Identity widens the scope of application of the technology to providing online identity for government regulated access to service, from health care and education, to food, drugs and alcohol.<br/><br/>
+	  <br/><br/>
+	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
+          <a href="http://www.splicious.net/">Click here to learn more.</a>
+        </div>
+        <div id="gamesForDemocracy" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
+          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <b>Games for Democracy</b><br/><br/>
+          Games for Democracy widens the scope of application of the technology to online participation in government and self-determination.<br/><br/>
+	  <br/><br/>
+	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
+          <a href="http://www.splicious.net/">Click here to learn more.</a>
+        </div>
+        <div id="stockExchange" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
+          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <b>Stock Exchange</b><br/><br/>
+          Stock Exchange widens the scope of application of the technology to trading in BTC-based derivatives.<br/><br/>
+	  <br/><br/>
+	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
+          <a href="http://www.splicious.net/">Click here to learn more.</a>
+        </div>
+        <div id="currencyLessExchange" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
+          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <b>Currency-free Exchange</b><br/><br/>
+          Currency-free exchange widens the scope of application of the technology to gift-based economies.<br/><br/>
+	  <br/><br/>
+	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
+          <a href="http://www.splicious.net/">Click here to learn more.</a>
+        </div>
       </div>
-      <!-- canvas id="testCanvas" width="1457" height="900"></canvas -->
+      <!--div class="canvasHolder"/-->
     </div>
 </body>
 </html>
