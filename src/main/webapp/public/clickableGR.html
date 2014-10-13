@@ -242,62 +242,99 @@
            g.moveTo( ( x6 + xOffset ), ( y6 + yOffset ) );
            g.arc( ( x6 + xOffset ), ( y6 + yOffset ), (x6-x5), (1/2*Math.PI), Math.PI);
 
-           var pts = [
+           var pt1 = 
                {
                    "x" : ( 0 + xOffset ), "y" : ( availHeight + yOffset ),
                    "name" : "Splicious Music",
                    "text" : null, "clicked" : false,
                    "topicId" : "spliciousMusic", "topic" : null,
-                   "graphics" : null
-               },
+                   "graphics" : null, "next" : null, "prev" : null
+               };
+           var pt2 =
                {
-                   "x" : ( x1 + xOffset ), "y" : ( 0 + yOffset ),
+                   "x" : ( x1 + xOffset ), "y" : ( 0 + yOffset ), "pos" : null,
                    "name" : "Splicious Sharing", "text" : null, "clicked" : false,
                    "topicId" : "spliciousSharing", "topic" : null,
-                   "graphics" : null
-               },
+                   "graphics" : null, "next" : null, "prev" : null
+               };
+
+           var pt3 =
                {
-                   "x" : ( availWidth + xOffset ), "y" : ( y1 + yOffset ),
+                   "x" : ( availWidth + xOffset ), "y" : ( y1 + yOffset ), "pos" : null,
                    "name" : "Splicious Market", "text" : null, "clicked" : false,
                    "topicId" : "spliciousMarket", "topic" : null,
-                   "graphics" : null
-               },
+                   "graphics" : null, "next" : null, "prev" : null
+               };
+           var pt4 =
                {
-                   "x" : ( x2 + xOffset ), "y" : ( availHeight + yOffset ),
+                   "x" : ( x2 + xOffset ), "y" : ( availHeight + yOffset ), "pos" : null,
                    "name" : "Splicious Dating", "text" : null, "clicked" : false,
                    "topicId" : "spliciousDating", "topic" : null,
-                   "graphics" : null
-               },
+                   "graphics" : null, "next" : null, "prev" : null
+               };
+           var pt5 =
                {
-                   "x" : ( x1 + xOffset ), "y" : ( y2 + yOffset ),
+                   "x" : ( x1 + xOffset ), "y" : ( y2 + yOffset ), "pos" : null,
                    "name" : "Privacy and Identity", "text" : null, "clicked" : false,
                    "topicId" : "privacyAndIdentity", "topic" : null,
-                   "graphics" : null
-               },
+                   "graphics" : null, "next" : null, "prev" : null
+               };
+           var pt6 =
                {
-                   "x" : ( x3 + xOffset ), "y" : ( y1 + yOffset ),
+                   "x" : ( x3 + xOffset ), "y" : ( y1 + yOffset ), "pos" : null,
                    "name" : "Games for Democracy", "text" : null, "clicked" : false,
                    "topicId" : "gamesForDemocracy", "topic" : null,
-                   "graphics" : null
-               },
+                   "graphics" : null, "next" : null, "prev" : null
+               };
+           var pt7 =
                {
-                   "x" : ( x2 + xOffset ), "y" : ( y3 + yOffset ),
-                   "name" : "Medical records", "text" : null, "clicked" : false,
-                   "topicId" : "medicalRecords", "topic" : null,
-                   "graphics" : null
-               },
-               {
-                   "x" : ( x4 + xOffset ), "y" : ( y2 + yOffset ),
+                   "x" : ( x2 + xOffset ), "y" : ( y3 + yOffset ), "pos" : null,
                    "name" : "Stock exchange", "text" : null, "clicked" : false,
                    "topicId" : "stockExchange", "topic" : null,
-                   "graphics" : null
-               },
+                   "graphics" : null, "next" : null, "prev" : null
+               };
+           var pt8 =
                {
-                   "x" : ( x3 + xOffset ), "y" : ( y4 + yOffset ),
+                   "x" : ( x4 + xOffset ), "y" : ( y2 + yOffset ), "pos" : null,
+                   "name" : "Medical records", "text" : null, "clicked" : false,
+                   "topicId" : "medicalRecords", "topic" : null,
+                   "graphics" : null, "next" : null, "prev" : null
+               };
+           var pt9 =
+               {
+                   "x" : ( x3 + xOffset ), "y" : ( y4 + yOffset ), "pos" : null,
                    "name" : "Currency-less exchange", "text" : null, "clicked" : false,
                    "topicId" : "currencyLessExchange", "topic" : null,
-                   "graphics" : null
+                   "graphics" : null, "next" : null, "prev" : null
                }
+
+           pt1.next = pt2;
+           pt2.prev = pt1;
+           pt2.next = pt3;
+           pt3.prev = pt2;
+           pt3.next = pt4;
+           pt4.prev = pt3;
+           pt4.next = pt5;
+           pt5.prev = pt4;
+           pt5.next = pt6;
+           pt6.prev = pt5;
+           pt6.next = pt7;
+           pt7.prev = pt6;
+           pt7.next = pt8;
+           pt8.prev = pt7;
+           pt8.next = pt9;
+           pt9.prev = pt8;
+
+           var pts = [
+               pt1,
+               pt2,
+               pt3,
+               pt4,
+               pt5,
+               pt6,
+               pt7,
+               pt8,
+               pt9
                //{ "x" : ( x5 + xOffset ), "y" : ( y3 + yOffset ) }
            ];
            
@@ -343,8 +380,18 @@
            text.outline = 3;                 
            if ( i == 5 ) {
                text.x = pt.x - 30;
-               text.y = pt.y - 90 ;
+               text.y = pt.y - 100 ;
                text.lineWidth = 40;
+           }
+           else if ( i == 6 ) {
+               text.x = pt.x - 30;
+               text.y = pt.y + 30;
+               text.lineWidth = 400;
+           }
+           else if ( i == 7 ) {
+               text.x = pt.x - 10;
+               text.y = pt.y + 40;
+               text.lineWidth = 400;
            }
            else if ( i == 8 ) {
                text.x = pt.x - 280;
@@ -362,13 +409,50 @@
            stage.update();
        }       
 
+       function showFinancialsTarget( oStage, cntnr, i, pt, handler ) {
+           var g = pt.graphics;
+           var sCirc = new createjs.Shape( g );
+
+           var trgtx = pt.x - 110;
+           var trgty = pt.y - 100;
+           g.setStrokeStyle(1, 'round', 'round');
+	   g.beginStroke("#000");
+	   g.beginFill("#013d2d");
+           //g.beginBitmapFill(img);
+	   g.drawCircle( trgtx, trgty, 45 ); //55,53
+           g.endFill();
+
+           var tpcId = "#" + "btcIcon";
+           var tpcDiv = $( tpcId ).get( 0 );
+           tpcDiv.style.visibility = 'visible';
+           var content = new createjs.DOMElement( tpcDiv );           
+           content.x = trgtx + 40;
+           content.y = trgty + 40;
+           content.regX = 40;
+           content.regY = 40;           
+
+           function tick(event) {
+               if ( content.scaleX <= 4.0 ) {
+	           content.scaleX = content.scaleX + 0.1;
+                   content.scaleY = content.scaleY + 0.1;
+	           oStage.update(event);
+               }
+               else {
+                   createjs.Ticker.removeAllEventListeners();                   
+	           oStage.update(event);
+               }
+	   }
+
+           createjs.Ticker.addEventListener("tick", tick);
+
+           cntnr.addChild( sCirc, content );
+       }
+
        function showTopic( oStage, cntnr, i, pt, handler ) {
            console.log( "in show topic ( 1 ) with pt.topicId = " + pt.topicId );
 
            var sf = 0.30;
            var params = findAvailArea( sf );
-//            var canvas = phiCanvas( params, ".canvasHolder", sf, 1.0, true );
-           //canvas.style.position = "absolute";
 
            var availWidth = params.availWidth;
            var availHeight = params.availHeight;
@@ -377,85 +461,57 @@
            
            var PHI = params.PHI;
            
-//            var stage = new createjs.Stage(canvas);
-//            var s = new createjs.Shape();
-// 	   var g = s.graphics;
-           
-//            g.setStrokeStyle(1, 'round', 'round');
-// 	   g.beginStroke("#0F0");
-// 	   g.beginFill("#000");
-//            g.drawRect(0,0,availWidth,( availHeight / 2 ));
-//            g.endFill();
-
-//            var container = new createjs.Container();
-// 	   stage.addChild(container);
-
-           console.log( "in show topic ( 2 ) with pt.topicId = " + pt.topicId );
-	   //var frame = new createjs.Shape( pt.graphics );
-           //var frame = new createjs.Shape( g );
-	   //frame.graphics.beginFill("#000").drawRect(0,0,availWidth,availHeight);
-	   //frame.regX = 310;
-	   //frame.regY = 400;
-           console.log( "in show topic ( 3 ) with pt.topicId = " + pt.topicId );
-
-//            img = new Image();
-//            img.src = "fern1.jpeg";
-
-//            var image = new createjs.Bitmap(img);
-//            image.mask = s;
-
            var tpcId = "#" + pt.topicId;
            var tpcDiv = $( tpcId ).get( 0 );
-           //tpcDiv.parentNode.removeChild( tpcDiv );
            tpcDiv.style.visibility = 'visible';
            var content = new createjs.DOMElement( tpcDiv );           
-           //content.position = "absolute";
-           content.x = 3;
-           content.y = 3;
-           //content.regX = availWidth;
-	   //content.regY = availHeight - 150;
-           
-           //container.addChild(frame, image);
-           //container.addChild(s, image, content);
-           //container.addChild(content);
-           //cntnr.addChild(s, image, content);
+           content.x = 10;
+           content.y = 10;
+
            cntnr.addChild(content);
-	   //container.x = 3; container.y = 3;
-	   //container.alpha = 0.8;
-	   //container.rotation = 25;
-	   //container.scaleX = 1.0;
-           //container.scaleY = 1.0;
            
            console.log( "in show topic ( 5 ) with pt.topicId = " + pt.topicId );
            
-           //pt.topic = container;
            pt.topic = content;           
 
-//            function tick(event) {
-//                if ( container.scaleX <= 2.0 ) {
-// 	           container.scaleX = container.scaleX + 0.1;
-//                    container.scaleY = container.scaleY + 0.1;
- 	           //container.alpha = 0.5*(1+Math.sin(container.rotation*0.01));
-// 	           stage.update(event);
-//                }
-//                else {
-//                    createjs.Ticker.removeAllEventListeners();
-//                }
-// 	   }
+           function tick(event) {
+               if ( content.scaleX <= 2.0 ) {
+	           content.scaleX = content.scaleX + 0.1;
+                   content.scaleY = content.scaleY + 0.1;
+	           oStage.update(event);
+               }
+               else {
+                   createjs.Ticker.removeAllEventListeners();
+                   content.htmlElement.style.font = "18px Optima";
+                   if ( pt.next != null ) {
+                       pt.next.pos.visible = true;
+                   }
+                   else {
+                       showFinancialsTarget( oStage, cntnr, i, pt, handler );
+                   }
+                   if ( pt.prev != null ) {
+                       pt.prev.text.visible = false;
+                   }
+	           oStage.update(event);
+               }
+	   }
 
-//            createjs.Ticker.addEventListener("tick", tick);
+           createjs.Ticker.addEventListener("tick", tick);
 
            console.log( "in show topic ( 6 ) with pt.topicId = " + pt.topicId );
 
            oStage.update();
        }
 
-       function hideText( stage, pt ) {
+       function hideText( stage, container, pt ) {
            var ptTxt = pt.text;
            console.log( "in hideText with pt = " + pt.toString() + " pt.text = " + ptTxt.toString() );
-           pt.text = null;
-           stage.removeChild( ptTxt );           
-           stage.update();
+           if ( ptTxt != null ) {
+               ptTxt.visible = false;
+               pt.text = null;
+               container.removeChild( ptTxt );           
+               stage.update();
+           }                      
        }
  
        function hideTopic( stage, container, pt ) {
@@ -488,7 +544,7 @@
                else {
                    console.log( "pt.clicked is true " );
                    pt.clicked = false;
-                   hideText( stage, pt );
+                   hideText( stage, container, pt );
                    hideTopic( stage, container, pt );
                }
            }
@@ -526,7 +582,7 @@
                    //console.log( "pt.text is not null " );
                    if ( !( pt.clicked ) ) {
                        //console.log( "pt.clicked is false " );
-                       hideText( stage, pt );
+                       hideText( stage, container, pt );
                    }
                }
            }
@@ -638,6 +694,15 @@
                        handleTextRollout( stage, container, event, pts );
                    }
                );
+               
+               if ( i < 1 ) {
+                   text.visible = true;
+               }
+               else {
+                   text.visible = false;
+               }
+
+               pt.pos = text;
                container.addChild( text );
            }
            
@@ -663,7 +728,7 @@
       <!--div id="detailCanvasHolder"-->
       <div class="canvasHolder">
         <div id="spliciousMusic" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
-          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <img src="fiddlefern2.jpeg" alt="Fern" height="42" width="42">
           <b>Splicious Music Sharing</b><br/><br/>
           Splicious music sharing is a narrowly focused application of the technology to seed the network and garner attention.<br/><br/>
 	  <br/><br/>
@@ -671,7 +736,7 @@
           <a href="http://www.splicious.net/">Click here to learn more.</a>
         </div>
         <div id="spliciousSharing" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
-          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <img src="fiddlefern2.jpeg" alt="Fern" height="42" width="42">
           <b>Splicious Content Sharing</b><br/><br/>
           Splicious content sharing widens the scope of application of the technology to general content sharing.<br/><br/>
 	  <br/><br/>
@@ -679,7 +744,7 @@
           <a href="http://www.splicious.net/">Click here to learn more.</a>
         </div>
         <div id="spliciousMarket" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
-          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <img src="fiddlefern2.jpeg" alt="Fern" height="42" width="42">
           <b>Splicious Market</b><br/><br/>
           Splicious market sharing widens the scope of application of the technology to a more general BTC-based online market.<br/><br/>
 	  <br/><br/>
@@ -687,7 +752,7 @@
           <a href="http://www.splicious.net/">Click here to learn more.</a>
         </div>
         <div id="spliciousDating" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
-          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <img src="fiddlefern2.jpeg" alt="Fern" height="42" width="42">
           <b>Splicious Dating</b><br/><br/>
           Splicious dating widens the scope of application of the technology to a dating.<br/><br/>
 	  <br/><br/>
@@ -695,15 +760,15 @@
           <a href="http://www.splicious.net/">Click here to learn more.</a>
         </div>
         <div id="privacyAndIdentity" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
-          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <img src="fiddlefern2.jpeg" alt="Fern" height="42" width="42">
           <b>Privacy and Identity</b><br/><br/>
-          Privacy and Identity widens the scope of application of the technology to providing online identity for government regulated access to service, from health care and education, to food, drugs and alcohol.<br/><br/>
+          Privacy and Identity widens the scope to providing online identity for government regulated access to service, from health care and education, to food, drugs and alcohol.<br/><br/>
 	  <br/><br/>
 	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
           <a href="http://www.splicious.net/">Click here to learn more.</a>
         </div>
         <div id="gamesForDemocracy" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
-          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <img src="fiddlefern2.jpeg" alt="Fern" height="42" width="42">
           <b>Games for Democracy</b><br/><br/>
           Games for Democracy widens the scope of application of the technology to online participation in government and self-determination.<br/><br/>
 	  <br/><br/>
@@ -711,20 +776,33 @@
           <a href="http://www.splicious.net/">Click here to learn more.</a>
         </div>
         <div id="stockExchange" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
-          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <img src="fiddlefern2.jpeg" alt="Fern" height="42" width="42">
           <b>Stock Exchange</b><br/><br/>
           Stock Exchange widens the scope of application of the technology to trading in BTC-based derivatives.<br/><br/>
 	  <br/><br/>
 	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
           <a href="http://www.splicious.net/">Click here to learn more.</a>
         </div>
+        <div id="medicalRecords" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
+          <img src="fiddlefern2.jpeg" alt="Fern" height="42" width="42">
+          <b>Medical records</b><br/><br/>
+          Stock Exchange widens the scope of application of the technology to sharing of medical records.<br/><br/>
+	  <br/><br/>
+	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
+          <a href="http://www.splicious.net/">Click here to learn more.</a>
+        </div>
         <div id="currencyLessExchange" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:320px; height:260px; padding: 5px; visibility: hidden;">
-          <img src="fern1.jpeg" alt="Fern" height="42" width="42">
+          <img src="fiddlefern2.jpeg" alt="Fern" height="42" width="42">
           <b>Currency-free Exchange</b><br/><br/>
           Currency-free exchange widens the scope of application of the technology to gift-based economies.<br/><br/>
 	  <br/><br/>
 	  <!-- button id="btn" width="100" onclick="alert('hello')">Click here to learn more</button -->
           <a href="http://www.splicious.net/">Click here to learn more.</a>
+        </div>
+        <div id="btcIcon" style="z-index: 1; position: absolute; background-color: #000; color:#FFF; width:40px; height:40px; padding: 5px; visibility: hidden;">
+          <a href="financials.html">
+          <img src="BTCIcon.png" alt="btcicon" height="50" width="50">
+          </a>
         </div>
       </div>
       <!--div class="canvasHolder"/-->
